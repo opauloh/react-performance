@@ -160,6 +160,9 @@ emoji characters are here to help you.
 - **Alfred the Alert** 🚨 will occasionally show up in the test failures with
   potential explanations for why the tests are failing.
 
+
+## Notes
+
 ## Contributors
 
 Thanks goes to these wonderful people
