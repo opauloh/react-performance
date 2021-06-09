@@ -293,6 +293,9 @@ much code we are loading at the initial load that we are not using
   development, and compare the previous version with the current, because we
   might not always have a 100% optmized code splitting
 
+- The red is the unused code, if we click we will have the code with the lines
+  in red and blue
+
 ## Contributors
 
 Thanks goes to these wonderful people
