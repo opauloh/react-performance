@@ -240,6 +240,36 @@ we kick off a dynamic import)
 </label>
 ```
 
+**Webpack Magic Components** - We can use
+[magic comments](https://webpack.js.org/api/module-methods/#magic-comments) to
+make webpack add things to the document's `head` and instruct the browser to
+prefetch dynamic imports
+
+```js
+import(/* webpackPrefetch: true */ './some-module.js')
+```
+
+When webpack sees this comment, it adds this to your document’s head:
+
+`<link rel="prefetch" as="script" href="/static/js/1.chunk.js">``
+
+- With this, the browser will automatically load this JavaScript file into the
+  browser cache so it’s ready ahead of time.
+
+- We can use the `webpackChunkName` magic comment which will allow webpack to
+  place common modules in the same chunk. This is good for components which you
+  want loaded together in the same chunk (to reduce multiple requests for
+  multiple modules which will likely be needed together).
+
+```js
+const One = React.lazy(() =>
+  import(/* webpackChunkName: "group" */ './group/one'),
+)
+const Two = React.lazy(() =>
+  import(/* webpackChunkName: "group" */ './group/two'),
+)
+```
+
 ## Contributors
 
 Thanks goes to these wonderful people
