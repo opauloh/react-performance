@@ -226,8 +226,19 @@ function App() {
 ```
 
 **Eager Loading** - Technique to pre-load heavy components so the user can have
-it loaded when he needs (usually using `mouseOver` or `focus` we kick off a
-dynamic import)
+it loaded when he needs (usually using `onMouseOver`, `onMouseEnter` or `focus`
+we kick off a dynamic import)
+
+```js
+<label style={{marginBottom: '1rem'}} onMouseOver={() => import('../globe')}>
+  <input
+    type="checkbox"
+    checked={showGlobe}
+    onChange={e => setShowGlobe(e.target.checked)}
+  />
+  {' show globe'}
+</label>
+```
 
 ## Contributors
 
