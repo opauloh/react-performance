@@ -213,9 +213,12 @@ function App() {
   `npm run serve`.
 
 - The component that are going to be lazy loaded need to be exported as default!
-- The `<React.Suspense />` component can be anywhere as long it is a parent of
-  the lazy loaded component (it will only work when attempting to load the lazy
-  loaded component)
+- The `<React.Suspense />` component for the current version of React can be
+  anywhere as long it is a parent of the lazy loaded component (it will only
+  work when attempting to load the lazy loaded component). Altough, in the
+  future with concurrent mode, we want to avoid putting it conditional (inside a
+  State for example, because it can take a certain ammount of time to get the
+  fallback to appear)
 
 ```js
 <div style={{width: 400, height: 400}}>
@@ -224,6 +227,11 @@ function App() {
   </React.Suspense>
 </div>
 ```
+
+- We can have the `<React.Suspense />` wrapping the whole component, this will
+  mean all the lazy loaded components will reuse the same `<React.Suspense />`,
+  because it will get the first parent, this is good if we want to have
+  multiples components using only one `<React.Suspense />`
 
 **Eager Loading** - Technique to pre-load heavy components so the user can have
 it loaded when he needs (usually using `onMouseOver`, `onMouseEnter` or `focus`
