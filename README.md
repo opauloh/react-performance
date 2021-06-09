@@ -227,6 +227,10 @@ function App() {
   </React.Suspense>
 </div>
 ```
+- Dev tools tip: In components tab we can select a component and click on the StopWatch button to suspense/unsuspend the component, and see the `<React.Suspense />` behavior:
+
+![image](https://user-images.githubusercontent.com/19270322/121383785-16950980-c91e-11eb-89eb-5d5c6fe73bbc.png)
+
 
 - We can have the `<React.Suspense />` wrapping the whole component, this will
   mean all the lazy loaded components will reuse the same `<React.Suspense />`,
@@ -277,6 +281,8 @@ const Two = React.lazy(() =>
   import(/* webpackChunkName: "group" */ './group/two'),
 )
 ```
+
+
 
 ## Contributors
 
