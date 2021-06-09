@@ -225,6 +225,10 @@ function App() {
 </div>
 ```
 
+**Eager Loading** - Technique to pre-load heavy components so the user can have
+it loaded when he needs (usually using `mouseOver` or `focus` we kick off a
+dynamic import)
+
 ## Contributors
 
 Thanks goes to these wonderful people
