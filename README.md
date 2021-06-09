@@ -227,10 +227,12 @@ function App() {
   </React.Suspense>
 </div>
 ```
-- Dev tools tip: In components tab we can select a component and click on the StopWatch button to suspense/unsuspend the component, and see the `<React.Suspense />` behavior:
+
+- Dev tools tip: In components tab we can select a component and click on the
+  StopWatch button to suspense/unsuspend the component, and see the
+  `<React.Suspense />` behavior:
 
 ![image](https://user-images.githubusercontent.com/19270322/121383785-16950980-c91e-11eb-89eb-5d5c6fe73bbc.png)
-
 
 - We can have the `<React.Suspense />` wrapping the whole component, this will
   mean all the lazy loaded components will reuse the same `<React.Suspense />`,
@@ -282,7 +284,14 @@ const Two = React.lazy(() =>
 )
 ```
 
+**The Coverage Tool** We can use the browser's coverage tool, to analyze how
+much code we are loading at the initial load that we are not using
 
+![image](https://user-images.githubusercontent.com/19270322/121384672-daae7400-c91e-11eb-91b9-0b17ba1607a1.png)
+
+- A tip when doing optimization is to leverage on production code, not
+  development, and compare the previous version with the current, because we
+  might not always have a 100% optmized code splitting
 
 ## Contributors
 
