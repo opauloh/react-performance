@@ -224,6 +224,10 @@ function App() {
   </React.Suspense>
 </div>
 ```
+- Dev tools tip: In components tab we can select a component and click on the StopWatch button to suspense/unsuspend the component, and see the `<React.Suspense />` behavior:
+
+![image](https://user-images.githubusercontent.com/19270322/121383785-16950980-c91e-11eb-89eb-5d5c6fe73bbc.png)
+
 
 **Eager Loading** - Technique to pre-load heavy components so the user can have
 it loaded when he needs (usually using `onMouseOver`, `onMouseEnter` or `focus`
@@ -269,6 +273,8 @@ const Two = React.lazy(() =>
   import(/* webpackChunkName: "group" */ './group/two'),
 )
 ```
+
+
 
 ## Contributors
 
