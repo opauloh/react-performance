@@ -160,8 +160,70 @@ emoji characters are here to help you.
 - **Alfred the Alert** 🚨 will occasionally show up in the test failures with
   potential explanations for why the tests are failing.
 
-
 ## Notes
+
+**Code Splitting** - Code splitting acts on the principle that loading less code
+will speed up your app. Say for example that we’re building a complex dashboard
+application that includes the venerable d3 library for graphing data. Your users
+start complaining because it takes too long to load the login screen.
+
+**Built-in javascript dynamic import**
+
+```js
+import('/some-module.js').then(
+  module => {
+    // do stuff with the module's exports
+  },
+  error => {
+    // there was some error loading the module...
+  },
+)
+```
+
+**React way of loading modules**
+
+```js
+// smiley-face.js
+import * as React from 'react'
+
+function SmileyFace() {
+  return <div>😃</div>
+}
+
+export default SmileyFace
+
+// app.js
+import * as React from 'react'
+
+const SmileyFace = React.lazy(() => import('./smiley-face'))
+
+function App() {
+  return (
+    <div>
+      <React.Suspense fallback={<div>loading...</div>}>
+        <SmileyFace />
+      </React.Suspense>
+    </div>
+  )
+}
+```
+
+- We may also want to try running the production build so you can see what the
+  sizes are like post-minification: Run `npm run build` and then
+  `npm run serve`.
+
+- The component that are going to be lazy loaded need to be exported as default!
+- The `<React.Suspense />` component can be anywhere as long it is a parent of
+  the lazy loaded component (it will only work when attempting to load the lazy
+  loaded component)
+
+```js
+<div style={{width: 400, height: 400}}>
+  <React.Suspense fallback={<div>loading...</div>}>
+    {showGlobe ? <Globe /> : null}
+  </React.Suspense>
+</div>
+```
 
 ## Contributors
 
