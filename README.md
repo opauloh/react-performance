@@ -298,6 +298,78 @@ much code we are loading at the initial load that we are not using
 
 - Use incognito to prevent your extensions to affect your coverage
 
+**useMemo** - Our component's calculations performed within render will be
+performed every single render, regardless of whether the inputs for the
+calculations change. For example:
+
+```js
+function Distance({x, y}) {
+  const distance = calculateDistance(x, y)
+  return (
+    <div>
+      The distance between {x} and {y} is {distance}.
+    </div>
+  )
+}
+```
+
+If that component’s parent re-renders, or if we add some unrelated state to the
+component and trigger a re-render, we’ll be calling calculateDistance every
+render which could lead to a performance bottleneck.
+
+This is why we have the useMemo hook from React:
+
+```js
+function Distance({x, y}) {
+  const distance = React.useMemo(() => calculateDistance(x, y), [x, y])
+  return (
+    <div>
+      The distance between {x} and {y} is {distance}.
+    </div>
+  )
+}
+```
+
+- A good aim for performance, is to have 60 frames a second, which is where we
+  have a nice smooth experience for the human eye, then you need to nail 16
+  frames a second, that is 1,000 divided by 60 frames a second. That's going to
+  be 16 milliseconds, thereabouts, for your JavaScript to run so that the
+  browser can keep up and not drop any frames and resulting in a janky
+  experience.
+- So we aim, our JavaScript to run in 16 milliseconds, or it's still not super
+  awesome.
+
+**Always compare runing production mode** : `npm run build` then `npm run serve`
+
+**Web Workers** - We can use Web Workers to put slow functions run in a thread
+appart from the main thread, that can help us with performance because the main
+thread is not interrupted to execute the slow function, we just need a way to
+work asynchronous with the web worker's data
+
+```js
+const {data: allItems, run} = useAsync()
+
+React.useEffect(() => {
+  run(getItems(inputValue))
+}, [inputValue, run])
+```
+
+- `workerize` is a package that makes using web workers easier: and have the
+  `workerize-loader` which is a webpack loader for workerize which basically
+  means you can put any module (and the modules that it imports) into a
+  webworker.
+
+```js
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import makeFilterCitiesWorker from 'workerize!./filter-cities'
+const {getItems} = makeFilterCitiesWorker()
+export {getItems}
+```
+
+- The workerize! thing in the import statement is a fancy webpack syntax to tell
+  webpack to treat that module specially (specifically to pipe it through the
+  workerize-loader so Jason can do his magic on it to get it into a web worker).
+
 ## Contributors
 
 Thanks goes to these wonderful people
