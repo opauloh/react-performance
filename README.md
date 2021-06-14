@@ -296,6 +296,8 @@ much code we are loading at the initial load that we are not using
 - The red is the unused code, if we click we will have the code with the lines
   in red and blue
 
+- Use incognito to prevent your extensions to affect your coverage
+
 ## Contributors
 
 Thanks goes to these wonderful people
