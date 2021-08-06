@@ -61,12 +61,6 @@
     "format": "prettier --write \"./src\"",
     "validate": "npm-run-all --parallel build:profile test:coverage lint"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "node ./scripts/pre-commit",
-      "pre-push": "node ./scripts/pre-push"
-    }
-  },
   "jest": {
     "collectCoverageFrom": [
       "src/final/**/*.js"
