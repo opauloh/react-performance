@@ -455,6 +455,30 @@ NameInput = React.memo(NameInput)
 // etc... no other changes necessary
 ```
 
+Alternative ways of using `React.memo`:
+
+```js
+const NameInput = React.memo(({name, onNameChange}) => {
+  return (
+    <label>
+      Name: <input value={name} onChange={e => onNameChange(e.target.value)} />
+    </label>
+  )
+})
+// But this is not so good because it won't print the name of the function in the Dev tools
+```
+
+```js
+const NameInput = React.memo(function NameInput({name, onNameChange}) {
+  return (
+    <label>
+      Name: <input value={name} onChange={e => onNameChange(e.target.value)} />
+    </label>
+  )
+})
+// This will print the name of the function in the Dev tools, but does not looks nice
+```
+
 ### Useful Profiler Tips
 
 **Enable Why each component rendered while profiling**
