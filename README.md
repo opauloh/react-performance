@@ -370,6 +370,116 @@ export {getItems}
   webpack to treat that module specially (specifically to pipe it through the
   workerize-loader so Jason can do his magic on it to get it into a web worker).
 
+**Lifecycle of React**
+
+```
+→  render → reconciliation → commit
+         ↖                   ↙
+              state change
+```
+
+- “render” phase: create React elements React.createElement
+- “reconciliation” phase: compare previous elements with the new ones
+- “commit” phase: update the DOM (if needed).
+
+A React Component can re-render for any of the following reasons:
+
+- Its props change
+- Its internal state changes
+- It is consuming context values which have changed
+- Its parent re-renders
+
+We can opt-out of state updates for a part of the React tree by using one of
+React’s built-in rendering bail-out utilities: `React.PureComponent`,
+`React.memo`, or `shouldComponentUpdate`.
+
+Using one of the bail-out APIs, you can instruct React when to re-render.
+`React.PureComponent` is for class components and `React.memo` is for function
+components and they do basically the same thing by default. They make it so your
+component will not re-render simply because its parent re-rendered which could
+improve the performance of your app overall.
+
+**React.memo** example:
+
+```js
+function CountButton({count, onClick}) {
+  return <button onClick={onClick}>{count}</button>
+}
+
+function NameInput({name, onNameChange}) {
+  return (
+    <label>
+      Name: <input value={name} onChange={e => onNameChange(e.target.value)} />
+    </label>
+  )
+}
+
+function Example() {
+  const [name, setName] = React.useState('')
+  const [count, setCount] = React.useState(0)
+  const increment = () => setCount(c => c + 1)
+  return (
+    <div>
+      <div>
+        <CountButton count={count} onClick={increment} />
+      </div>
+      <div>
+        <NameInput name={name} onNameChange={setName} />
+      </div>
+      {name ? <div>{`${name}'s favorite number is ${count}`}</div> : null}
+    </div>
+  )
+}
+```
+
+Based on how this is implemented, when you click on the counter button, the
+`<CountButton />` re-renders (so we can update the count value). But the
+`<NameInput />` is also re-rendered. If you have Record why each component
+rendered while profiling. enabled in React DevTools, then you’ll see that under
+“Why did this render?” it says "The parent component rendered."
+
+```js
+function CountButton({count, onClick}) {
+  return <button onClick={onClick}>{count}</button>
+}
+
+function NameInput({name, onNameChange}) {
+  return (
+    <label>
+      Name: <input value={name} onChange={e => onNameChange(e.target.value)} />
+    </label>
+  )
+}
+NameInput = React.memo(NameInput)
+
+// etc... no other changes necessary
+```
+
+### Useful Profiler Tips
+
+**Enable Why each component rendered while profiling**
+
+| ![](screenshots/screenshot-20210806105932.png) |
+| :--------------------------------------------: |
+|    Click on the Cog Icon to go to settings     |
+
+| ![](screenshots/screenshot-20210806110105.png) |
+| :--------------------------------------------: |
+|      Example showing why did this render       |
+
+| ![](screenshots/screenshot-20210806110121.png) |
+| :--------------------------------------------: |
+|  The chart columns displayed are the commits   |
+
+### Premises
+
+- "Fix the slow render before you fix the unnecessary rerender"
+  [Kent C Dodds](https://kentcdodds.com/blog/fix-the-slow-render-before-you-fix-the-re-render)
+
+- Avoid the mistake of wrapping everything in `React.memo` which can actually
+  slow down your app in some cases and in all cases it makes your code more
+  complex.
+
 ## Contributors
 
 Thanks goes to these wonderful people
