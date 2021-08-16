@@ -479,9 +479,14 @@ const NameInput = React.memo(function NameInput({name, onNameChange}) {
 // This will print the name of the function in the Dev tools, but does not looks nice
 ```
 
-**React.memo** accepts a second argument which is a custom compare function that
-allows us to compare the props and return true if rendering the component again
-is unnecessary and false if it is necessary.
+- **React.memo** accepts a second argument which is a custom compare function
+  that allows us to compare the props and return true if rendering the component
+  again is unnecessary and false if it is necessary.
+
+- If it returns `true`, it won't rerender, if returns `false` it will
+
+> Without the first argument, the default behaviour of `React.memo` is to
+> compare each previous prop againts the next prop
 
 I.e:
 
@@ -489,6 +494,15 @@ I.e:
 // 🐨 Memoize the ListItem here using React.memo
 ListItem = React.memo(ListItem, (prevProps, nextProps) => {
   // rerender if the highlightindex is the current one (to apply current item selection)
+  /*
+  // Default behavior:
+  if (prevProps.getItemProps !== nextProps.getItemProps) return false  
+  if (prevProps.items !== nextProps.items) return false  
+  if (prevProps.index !== nextProps.index) return false  
+  if (prevProps.selectedItem !== nextProps.selectedItem) return false  
+  if (prevProps.highlightedIndex !== nextProps.highlightedIndex) return false  
+  return true
+  */
   if (nextProps.highlightedIndex === nextProps.index) {
     return false
   }
