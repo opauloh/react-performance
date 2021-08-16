@@ -15,18 +15,25 @@ function Menu({
 }) {
   return (
     <ul {...getMenuProps()}>
-      {items.map((item, index) => (
-        <ListItem
-          key={item.id}
-          getItemProps={getItemProps}
-          item={item}
-          index={index}
-          selectedItem={selectedItem}
-          highlightedIndex={highlightedIndex}
-        >
-          {item.name}
-        </ListItem>
-      ))}
+      {items.map((item, index) => {
+        const isSelected = selectedItem?.id === item.id
+        const isHighlighted = highlightedIndex === index
+
+        return (
+          <ListItem
+            key={item.id}
+            getItemProps={getItemProps}
+            item={item}
+            index={index}
+            // selectedItem={selectedItem}
+            isSelected={isSelected}
+            isHighlighted={isHighlighted}
+            // highlightedIndex={highlightedIndex}
+          >
+            {item.name}
+          </ListItem>
+        )
+      })}
     </ul>
   )
 }
@@ -37,12 +44,14 @@ function ListItem({
   getItemProps,
   item,
   index,
-  selectedItem,
-  highlightedIndex,
+  // selectedItem,
+  // highlightedIndex,
+  isHighlighted,
+  isSelected,
   ...props
 }) {
-  const isSelected = selectedItem?.id === item.id
-  const isHighlighted = highlightedIndex === index
+  // const isSelected = selectedItem?.id === item.id
+  // const isHighlighted = highlightedIndex === index
   return (
     <li
       {...getItemProps({
@@ -58,15 +67,18 @@ function ListItem({
   )
 }
 // 🐨 Memoize the ListItem here using React.memo
-ListItem = React.memo(ListItem, (prevProps, nextProps) => {
-  if (nextProps.highlightedIndex === nextProps.index) {
-    return false
-  }
-  if (prevProps.highlightedIndex === prevProps.index) {
-    return false
-  }
-  return true
-})
+// ListItem = React.memo(ListItem, (prevProps, nextProps) => {
+//   if (nextProps.highlightedIndex === nextProps.index) {
+//     return false
+//   }
+//   if (prevProps.highlightedIndex === prevProps.index) {
+//     return false
+//   }
+//   return true
+// })
+// In this case we changed the props we are passing to our component to primitive values,
+// so we don't even need to make a custom function, we can use the default react.memo behaviour
+ListItem = React.memo(ListItem)
 
 function App() {
   const forceRerender = useForceRerender()

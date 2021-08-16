@@ -516,6 +516,37 @@ ListItem = React.memo(ListItem, (prevProps, nextProps) => {
 })
 ```
 
+> **Note:** Even better is to not have to provide our custom memoization
+> comparator function and still get the perf gains? Definitely! So an
+> alternative approach is to pass the pre-computed values for isSelected and
+> isHighlighted to our ListItem. That way they are primitive values and we can
+> take advantage of React’s built-in comparison function and remove ours
+> altogether.
+
+```js
+<ul {...getMenuProps()}>
+  {items.map((item, index) => {
+    const isSelected = selectedItem?.id === item.id
+    const isHighlighted = highlightedIndex === index
+
+    return (
+      <ListItem
+        key={item.id}
+        getItemProps={getItemProps}
+        item={item}
+        index={index}
+        // selectedItem={selectedItem}
+        isSelected={isSelected}
+        isHighlighted={isHighlighted}
+        // highlightedIndex={highlightedIndex}
+      >
+        {item.name}
+      </ListItem>
+    )
+  })}
+</ul>
+```
+
 ### Useful Profiler Tips
 
 **Enable Why each component rendered while profiling**
