@@ -479,6 +479,29 @@ const NameInput = React.memo(function NameInput({name, onNameChange}) {
 // This will print the name of the function in the Dev tools, but does not looks nice
 ```
 
+**React.memo** accepts a second argument which is a custom compare function that
+allows us to compare the props and return true if rendering the component again
+is unnecessary and false if it is necessary.
+
+I.e:
+
+```js
+// 🐨 Memoize the ListItem here using React.memo
+ListItem = React.memo(ListItem, (prevProps, nextProps) => {
+  // rerender if the highlightindex is the current one (to apply current item selection)
+  if (nextProps.highlightedIndex === nextProps.index) {
+    return false
+  }
+  // rerender if the highlightexindex was the previous one (to clear previous item selection)
+  if (prevProps.highlightedIndex === prevProps.index) {
+    return false
+  }
+
+  // otherwise, don't need to rerender
+  return true
+})
+```
+
 ### Useful Profiler Tips
 
 **Enable Why each component rendered while profiling**
