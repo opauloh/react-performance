@@ -572,6 +572,15 @@ ListItem = React.memo(ListItem, (prevProps, nextProps) => {
   slow down your app in some cases and in all cases it makes your code more
   complex.
 
+### Windowing
+
+- We can use [react-virtual](https://github.com/tannerlinsley/react-virtual) to
+  create a virtualized list with react
+- The idea of virtualization is to render only a subset of the list items. This
+  is useful when the list is very long and you don’t need to render all of it.
+- We also play with calculated style heights to keep using the original
+  scrollbar
+
 ## Contributors
 
 Thanks goes to these wonderful people
