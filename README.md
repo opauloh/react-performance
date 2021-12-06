@@ -330,6 +330,10 @@ function Distance({x, y}) {
 }
 ```
 
+- Also, in React docs, it says is not always guaranteed the value to be
+  memoized, because React can choose to free some memory by getting rid of some
+  memoized values, but usually, we don't need to take that into account.
+
 - A good aim for performance, is to have 60 frames a second, which is where we
   have a nice smooth experience for the human eye, then you need to nail 16
   frames a second, that is 1,000 divided by 60 frames a second. That's going to
@@ -580,6 +584,57 @@ ListItem = React.memo(ListItem, (prevProps, nextProps) => {
   is useful when the list is very long and you don’t need to render all of it.
 - We also play with calculated style heights to keep using the original
   scrollbar
+
+### Context
+
+The way context works is that whenever the provided value changes from one
+render to another, it triggers a re-render of all the consuming components (even
+if they're memoized). Ex.
+
+```js
+const CountContext = React.createContext()
+
+function CountProvider(props) {
+  const [count, setCount] = React.useState(0)
+  const value = [count, setCount]
+  return <CountContext.Provider value={value} {...props} />
+}
+```
+
+Every time the `<CountProvider />` re-renders, the `value` is brand new, so all
+consumers will be re-rendered. The easiest way to avoid this is to use
+`React.useMemo()`:
+
+```js
+const CountContext = React.createContext()
+
+function CountProvider(props) {
+  const [count, setCount] = React.useState(0)
+  const value = React.useMemo(() => [count, setCount], [count])
+  return <CountContext.Provider value={value} {...props} />
+}
+```
+
+- _Note:_ We can have multiple contexts wrapped by a single component, because,
+  only the specific consumers will get re-rendered.
+
+```js
+function AppProvider({children}) {
+  const [state, dispatch] = React.useReducer(appReducer, {
+    dogName: '',
+    grid: initialGrid,
+  })
+  return (
+    <AppStateContext.Provider value={state}>
+      <DispatcherContext.Provider value={dispatch}>
+        {children}
+      </DispatcherContext.Provider>
+    </AppStateContext.Provider>
+  )
+}
+
+// Only the specifics consumers for AppStateContext and DispatcherContext will get re-rendered when state or dispatch changes
+```
 
 ## Contributors
 
