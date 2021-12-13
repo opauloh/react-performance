@@ -718,6 +718,9 @@ function Cell({state: cell, row, column}) {
 Cell = withStateSlice(Cell, (state, {row, column}) => state.grid[row][column])
 ```
 
+- Also, alternatively, we can use [Recoil](https://recoiljs.org), to create
+  small state slices. [Example](./src/exercise/06.extra-4.js)
+
 ## Contributors
 
 Thanks goes to these wonderful people
