@@ -636,6 +636,17 @@ function AppProvider({children}) {
 // Only the specifics consumers for AppStateContext and DispatcherContext will get re-rendered when state or dispatch changes
 ```
 
+_Performance death by a thousand cuts:_ when lots of components need to run when
+there’s a state update, which basically means that so many components are
+updated when state changes that it becomes a performance bottleneck.
+
+Usually it can be solved with less code, reducing component complexity, or often
+you have components responding to state change that don't need to. We can
+memoize with `React.memo` or we can use
+[colocation](https://kentcdodds.com/blog/state-colocation-will-make-your-react-app-faster),
+and move state inside or closer as possible with the components instead of
+placing in a global state.
+
 ## Contributors
 
 Thanks goes to these wonderful people
