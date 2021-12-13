@@ -647,6 +647,9 @@ memoize with `React.memo` or we can use
 and move state inside or closer as possible with the components instead of
 placing in a global state.
 
+- Another alternative solution is to split logic into two differents context, if
+  for some reason we need to have a global state.
+
 ## Contributors
 
 Thanks goes to these wonderful people
