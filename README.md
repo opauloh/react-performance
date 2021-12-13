@@ -649,6 +649,38 @@ placing in a global state.
 
 - Another alternative solution is to split logic into two differents context, if
   for some reason we need to have a global state.
+- Another solution is create a man in the middle component, which will consume
+  the state and have the Impl component memoized, so it will only rerender if
+  needed!
+
+```js
+function Cell({row, column}) {
+  const state = useAppState()
+  const cell = state.grid[row][column]
+
+  return <CellImpl cell={cell} row={row} column={column} />
+}
+Cell = React.memo(Cell)
+
+function CellImpl({cell, row, column}) {
+  const dispatch = useAppDispatch()
+  const handleClick = () => dispatch({type: 'UPDATE_GRID_CELL', row, column})
+
+  return (
+    <button
+      className="cell"
+      onClick={handleClick}
+      style={{
+        color: cell > 50 ? 'white' : 'black',
+        backgroundColor: `rgba(0, 0, 0, ${cell / 100})`,
+      }}
+    >
+      {Math.floor(cell)}
+    </button>
+  )
+}
+CellImpl = React.memo(CellImpl)
+```
 
 ## Contributors
 
