@@ -721,6 +721,57 @@ Cell = withStateSlice(Cell, (state, {row, column}) => state.grid[row][column])
 - Also, alternatively, we can use [Recoil](https://recoiljs.org), to create
   small state slices. [Example](./src/exercise/06.extra-4.js)
 
+### Avoiding performance regression
+
+- [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci) is a tool that
+  runs a series of audits on a page and reports the results.
+
+- [Reference](https://kentcdodds.com/blog/react-production-performance-monitoring)
+
+  > _NOTE_: for any of this to work in production, you need to enable React's
+  > profiler build. There's a small performance cost for doing this, so
+  > facebook.com only serves the profiler build of their app to a subset of
+  > users. Learn more about how to enable the profiler build from Profile a
+  > React App for Performance.
+
+- We can use React built-in function React.Profiler to profile our components
+  and keep tracking of performance measurements. The general strategy for the
+  `onRender` function is that it should send events in batches to some backend
+  monitoring service. I.e Graphana or Google Analytics.
+
+```js
+function App() {
+  return (
+    <div>
+      {/*
+      🐨 Wrap this div in a React.Profiler component
+      give it the ID of "counter" and pass reportProfile
+      to the onRender prop.
+      */}
+      <React.Profiler id="counter" onRender={reportProfile}>
+        <div>
+          Profiled counter
+          <Counter />
+        </div>
+      </React.Profiler>
+      <div>
+        Unprofiled counter
+        <Counter />
+      </div>
+    </div>
+  )
+}
+```
+
+- The data it collects is: id, phase, actualDuration, baseDuration, startTime,
+  commitTime, interactions.
+
+- The `actualDuration` is the time spent rendering the component.
+- The `startTime` is the time when the component begin rendering.
+- The `baseDuration` is the time spent rendering the component tree without
+  memoization.
+- The `commitTime` is the time when the component commited the update.
+
 ## Contributors
 
 Thanks goes to these wonderful people
